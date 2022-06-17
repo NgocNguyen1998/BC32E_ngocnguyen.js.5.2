@@ -40,7 +40,7 @@ function tinhTienThueTNCN(id1, id2) {
         thueSuat = 0.35
         tienPhaiNop = thuNhapChiuThue * thueSuat
     } else {
-        tienPhaiNop = 'Không hợp lệ'
+        tienPhaiNop = 'Không nộp thuế'
     }
     return tienPhaiNop;
 }
