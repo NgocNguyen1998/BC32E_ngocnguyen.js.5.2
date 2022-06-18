@@ -13,11 +13,12 @@
 function tinhTienThueTNCN(id1, id2) {
     var thuNhap = +document.getElementById(id1).value;
     var phuThuoc = +document.getElementById(id2).value;
+    var ten = document.getElementById('nhapTen').value;
     var thueSuat = 0;
     var thuNhapChiuThue = 0;
     thuNhapChiuThue = (thuNhap - 4000000 - phuThuoc * 1600000);
     var tienPhaiNop = 0;
-    if (thuNhap < 0 || phuThuoc < 0 || (!Number.isInteger(phuThuoc))) {
+    if (thuNhap < 0 || phuThuoc < 0 || (!Number.isInteger(phuThuoc))||ten==='') {
         tienPhaiNop = 'Không hợp lệ'
     }
     else {
@@ -38,7 +39,7 @@ function tinhTienThueTNCN(id1, id2) {
         } else {
             thueSuat = 0
         }
-        
+
         if (thuNhapChiuThue > 0) {
             tienPhaiNop = (thuNhapChiuThue * thueSuat).toLocaleString();
         } else {
@@ -46,7 +47,7 @@ function tinhTienThueTNCN(id1, id2) {
         }
     }
     return tienPhaiNop;
-} 
+}
 
 document.getElementById('tinhTienThue').onclick = function () {
     var ketQua_b1 = tinhTienThueTNCN('thuNhapNam', 'nguoiPhuThuoc');
@@ -102,16 +103,23 @@ function tinhTienCap(id1, id2, id3) {
             phiKenhCaoCap = 0
         };
     }
-    if (soKenh === 0 && loaiKhachHang !== '') {
-        chiPhi = phiHoaDon + phiCoBan
-    } else if (soKenh > 0 && loaiKhachHang === 'nhaDan') {
-        chiPhi = phiHoaDon + phiCoBan + soKenh * phiKenhCaoCap
-    } else if (soKenh > 0 && soKetNoi >= 0 && soKetNoi <= 10 && loaiKhachHang === 'doanhNghiep') {
-        chiPhi = phiHoaDon + phiCoBan + phiKenhCaoCap * soKenh
-    } else if (soKenh > 0 && soKetNoi > 10 && loaiKhachHang === 'doanhNghiep') {
-        chiPhi = phiHoaDon + phiCoBan + (soKetNoi - 10) * 5 + phiKenhCaoCap * soKenh
-    } else if (soKenh < 0 || loaiKhachHang === '') {
-        chiPhi = 'Không hợp lệ'
+
+    if (soKenh >= 0) {
+        if (loaiKhachHang === 'nhaDan') {
+            chiPhi = phiHoaDon + phiCoBan + soKenh * phiKenhCaoCap
+        } else if (loaiKhachHang === 'doanhNghiep') {
+            if (soKetNoi >= 0 && soKetNoi <= 10) {
+                chiPhi = phiHoaDon + phiCoBan + phiKenhCaoCap * soKenh
+            } else if (soKetNoi > 10) {
+                chiPhi = phiHoaDon + phiCoBan + (soKetNoi - 10) * 5 + phiKenhCaoCap * soKenh
+            } else {
+                chiPhi = 'Không hợp lệ!'
+            }
+        } else {
+            chiPhi = "Vui lòng chọn loại khách hàng!"
+        }
+    } else {
+        chiPhi = 'Không hợp lệ!'
     }
     return chiPhi;
 }
@@ -119,5 +127,16 @@ function tinhTienCap(id1, id2, id3) {
 document.getElementById('tinhTienCap').onclick = function () {
     var maKhachHang = document.getElementById('maKhachHang').value;
     var ketQua2 = tinhTienCap('loaiKhachHang', 'soKenh', 'soKetNoi');
-    document.getElementById('ketQua_b2').innerHTML = 'Mã khách hàng: ' + maKhachHang + '; Tiền cáp: $' + ketQua2;
+    var ketQua_b2 = '';
+
+    if (ketQua2>=0){
+        ketQua_b2 = 'Mã khách hàng: ' + maKhachHang + '; Tiền cáp: $' + ketQua2;
+    }else if(ketQua2==='Không hợp lệ'){
+        ketQua_b2 = 'Không hợp lệ!'
+    }else if(ketQua2==='Vui lòng chọn loại khách hàng!'){
+        ketQua_b2 = 'Vui lòng chọn loại khách hàng!'
+    }else{
+        ketQua_b2 = 'Không hợp lệ!'
+    }
+    document.getElementById('ketQua_b2').innerHTML = ketQua_b2;
 }
